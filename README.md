@@ -63,6 +63,62 @@ Prevalence <- Prevalence[!(Prevalence$location=="Global" | Prevalence$location==
 DALYs <- data [c(441:550), c(1,2,3,4,5,6,7,8)] # Creates new data frame with just DALYs 
 DALYs <- DALYs[!(DALYs$location=="Global" | DALYs$location=="World Bank Income Levels"),]
 
+##### EXPLORATORY DATA ANALYSIS ################################################
+
+# To reagrance locations in box plots 
+Deaths$location <- factor(Deaths$location, levels = c("High SDI", "High-middle SDI", "Middle SDI", "Low-middle SDI", "Low SDI", 
+                                                      "World Bank High Income", "World Bank Upper Middle Income", "World Bank Lower Middle Income", 
+                                                      "World Bank Low Income"))
+
+DALYs$location <- factor(DALYs$location, levels = c("High SDI", "High-middle SDI", "Middle SDI", "Low-middle SDI", "Low SDI", 
+                                                    "World Bank High Income", "World Bank Upper Middle Income", "World Bank Lower Middle Income", 
+                                                    "World Bank Low Income"))
+
+Prevalence$location <- factor(Prevalence$location, levels = c("High SDI", "High-middle SDI", "Middle SDI", "Low-middle SDI", "Low SDI", 
+                                                              "World Bank High Income", "World Bank Upper Middle Income", "World Bank Lower Middle Income", 
+                                                              "World Bank Low Income"))
+
+YLLs$location <- factor(YLLs$location, levels = c("High SDI", "High-middle SDI", "Middle SDI", "Low-middle SDI", "Low SDI", 
+                                                  "World Bank High Income", "World Bank Upper Middle Income", "World Bank Lower Middle Income", 
+                                                  "World Bank Low Income"))
+
+# Box Plots : Cancer Deaths, DALYs, YLLs, Prevalence rates 
+Cdeaths <- ggplot(Deaths, aes(x =location, y = Deaths$val, fill = location)) + 
+  geom_bar(stat = "identity") + 
+  labs(title = "Death Rate", x= "", y= "Deaths") +
+  scale_colour_economist() +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        plot.background = element_rect(fill = "#d5e4eb")) # Background color of the plot) 
+
+CDALY <- ggplot(DALYs, aes(x =location, y = DALYs$val, fill = location)) + 
+  geom_bar(stat = "identity") + 
+  labs(title = "DALYs Rate", x= "", y= "DALYs") +
+  scale_colour_economist() +
+  theme(axis.text.x = element_blank(),
+        axis.ticks.x=element_blank(),
+        plot.background = element_rect(fill = "#d5e4eb"))
+
+Cprev <- ggplot(Prevalence, aes(x =location, y = Prevalence$val, fill = location)) + 
+  geom_bar(stat = "identity") + 
+  labs(title = "Prevalence Rate", x= "", y= "Prevalence") +
+  scale_colour_economist() +
+  theme(axis.text.x = element_blank(),
+        axis.ticks.x=element_blank(),
+        plot.background = element_rect(fill = "#d5e4eb"))
+
+CYLL <- ggplot(YLLs, aes(x =location, y = YLLs$val, fill = location)) + 
+  geom_bar(stat = "identity") + 
+  labs(title = "YLLs Rate", x= "", y= "YLLs") +
+  scale_colour_economist() +
+  theme(axis.text.x = element_blank(),
+        axis.ticks.x=element_blank(),
+        plot.background = element_rect(fill = "#d5e4eb")) 
+
+ggarrange(Cdeaths, CDALY, Cprev,CYLL + rremove("x.text"), 
+          ncol = 2, nrow = 2) # This code arranges the above figures into one plot in order to see all figures better and easier.
+
+
 
 
 

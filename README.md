@@ -29,9 +29,10 @@ library(janitor) # Shows rows of a data frame with identical values for the spec
 library(GGally)# For scatter plot matrix graph visualization. 
 library(corrplot) # For correlation matrix graph visualization.
 library(ggpubr) # To have multiple plots on one same page. 
+library(scales) # stops ggplot using a scientific notation scale.
 
 ##### DATA INPUT ###############################################################
-data <- read_csv("Diss data/Cancer pres  .csv") # Imports the data set. The header=True command tells RStudio to use the first row of the data file as the names of each variable/column. 
+data <- read.csv("Diss data/Cancer pres  .csv") # Imports the data set. The header=True command tells RStudio to use the first row of the data file as the names of each variable/column. 
 attach(data) # Attaches the data to your environment so that you can directly refer to the variable by name.
 names(data) # Shows the name of variables in the data set.
 summary(data) # Produces summary data (Min, Median, Mean and Max) for the individual variables. 
@@ -65,7 +66,7 @@ DALYs <- DALYs[!(DALYs$location=="Global" | DALYs$location=="World Bank Income L
 
 ##### EXPLORATORY DATA ANALYSIS ################################################
 
-# To reagrance locations in box plots 
+# To reagrance locations in bar grpahs  
 Deaths$location <- factor(Deaths$location, levels = c("High SDI", "High-middle SDI", "Middle SDI", "Low-middle SDI", "Low SDI", 
                                                       "World Bank High Income", "World Bank Upper Middle Income", "World Bank Lower Middle Income", 
                                                       "World Bank Low Income"))
@@ -82,41 +83,81 @@ YLLs$location <- factor(YLLs$location, levels = c("High SDI", "High-middle SDI",
                                                   "World Bank High Income", "World Bank Upper Middle Income", "World Bank Lower Middle Income", 
                                                   "World Bank Low Income"))
 
-# Box Plots : Cancer Deaths, DALYs, YLLs, Prevalence rates 
-Cdeaths <- ggplot(Deaths, aes(x =location, y = Deaths$val, fill = location)) + 
+#### Bar grpahs : Cancer Deaths, DALYs, YLLs, Prevalence rates ################# 
+Cdeaths <- ggplot(Deaths, aes(x =location, y = val, fill = location)) + 
   geom_bar(stat = "identity") + 
   labs(title = "Death Rate", x= "", y= "Deaths") +
   scale_colour_economist() +
+  scale_y_continuous(labels = comma)+
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank(),
         plot.background = element_rect(fill = "#d5e4eb")) # Background color of the plot) 
 
-CDALY <- ggplot(DALYs, aes(x =location, y = DALYs$val, fill = location)) + 
+CDALY <- ggplot(DALYs, aes(x =location, y = val, fill = location)) + 
   geom_bar(stat = "identity") + 
   labs(title = "DALYs Rate", x= "", y= "DALYs") +
   scale_colour_economist() +
+  scale_y_continuous(labels = comma)+
   theme(axis.text.x = element_blank(),
         axis.ticks.x=element_blank(),
         plot.background = element_rect(fill = "#d5e4eb"))
 
-Cprev <- ggplot(Prevalence, aes(x =location, y = Prevalence$val, fill = location)) + 
+Cprev <- ggplot(Prevalence, aes(x =location, y = val, fill = location)) + 
   geom_bar(stat = "identity") + 
   labs(title = "Prevalence Rate", x= "", y= "Prevalence") +
   scale_colour_economist() +
+  scale_y_continuous(labels = comma)+
   theme(axis.text.x = element_blank(),
         axis.ticks.x=element_blank(),
         plot.background = element_rect(fill = "#d5e4eb"))
 
-CYLL <- ggplot(YLLs, aes(x =location, y = YLLs$val, fill = location)) + 
+CYLL <- ggplot(YLLs, aes(x =location, y = val, fill = location)) + 
   geom_bar(stat = "identity") + 
   labs(title = "YLLs Rate", x= "", y= "YLLs") +
   scale_colour_economist() +
+  scale_y_continuous(labels = comma) +
   theme(axis.text.x = element_blank(),
         axis.ticks.x=element_blank(),
         plot.background = element_rect(fill = "#d5e4eb")) 
 
 ggarrange(Cdeaths, CDALY, Cprev,CYLL + rremove("x.text"), 
           ncol = 2, nrow = 2) # This code arranges the above figures into one plot in order to see all figures better and easier.
+
+#### Box plots: Cancer Deaths, DALYs, YLLs, Prevalence rates ################### 
+
+box1 <- ggplot(Deaths, aes(y = val)) +
+  stat_boxplot(geom = "errorbar", width = 0.15) + 
+  scale_y_continuous(labels = comma) +
+  labs(title = "Death Rate", x= "", y= "Number of Deaths") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) + 
+  geom_boxplot() 
+
+box2 <- ggplot(DALYs, aes(y = val)) +
+  stat_boxplot(geom = "errorbar", width = 0.15) + 
+  scale_y_continuous(labels = comma) +
+  labs(title = "DALYs Rate", x= "", y= "Number of DALYs") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) + 
+  geom_boxplot() 
+
+box3 <- ggplot(Prevalence, aes(y = val)) +
+  stat_boxplot(geom = "errorbar", width = 0.15) + 
+  scale_y_continuous(labels = comma) +
+  labs(title = "Prevalence Rate", x= "", y= "Prevalence") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) + 
+  geom_boxplot() 
+
+box4 <- ggplot(YLLs, aes(y = val)) +
+  stat_boxplot(geom = "errorbar", width = 0.15) + 
+  scale_y_continuous(labels = comma) +
+  labs(title = "YLLs Rate", x= "", y= "Number of YLLs") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) + 
+  geom_boxplot() 
+
+ggarrange(box1, box2, box3,box4 + rremove("x.text"), 
+          ncol = 2, nrow = 2) # This code arranges the above figures into one plot in order to see all figures better and easier.
+
+
+
 
 
 

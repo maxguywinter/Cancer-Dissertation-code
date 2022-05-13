@@ -37,7 +37,6 @@ names(data) # Shows the name of variables in the data set.
 summary(data) # Produces summary data (Min, Median, Mean and Max) for the individual variables. 
 str(data) # Shows the observations and variables of the data.
 
-
 ##### DATA CODING/ CLEANING ####################################################
 data[data == "" | data == " "] <- NA # Makes any missing data a NA. 
 data[data == "N/A" | data == "n/a" | data == "N/a"| data == "-"] <- NA # Standardizes NA values (N/A, n/a, N/a) to NA. 

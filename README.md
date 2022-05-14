@@ -29,9 +29,11 @@ library(janitor) # Shows rows of a data frame with identical values for the spec
 library(GGally)# For scatter plot matrix graph visualization. 
 library(corrplot) # For correlation matrix graph visualization.
 library(ggpubr) # To have multiple plots on one same page. 
+library(gridExtra) # To have multiple plots on one same page. 
 library(scales) # stops ggplot using a scientific notation scale.
 library(forecast) # package provides various functions for computing and visualizing basic time series components
 library(tseries) # package provides various functions for computing and visualizing basic time series components
+library(tidyverse)
 
 ##### DATA INPUT ###############################################################
 
@@ -175,33 +177,131 @@ ggarrange(box1, box2, box3,box4 + rremove("x.text"),
 
 ##### TIME SERIES ANALYSIS #####################################################
 
-library(forecast) # package provides various functions for computing and visualizing basic time series components
-library(tseries) # package provides various functions for computing and visualizing basic time series components
-library(fpp2) # package provides various functions for computing and visualizing basic time series components
-
 ##### TIME SERIES DATA CODING/ CLEANING ########################################
 
 # Deaths 
-Deaths_high <- Deaths[!(Deaths$location_name=="High-middle SDI" | Deaths$location_name=="Middle SDI" | 
+Deaths_h<- Deaths[!(Deaths$location_name=="High-middle SDI" | Deaths$location_name=="Middle SDI" | 
                      Deaths$location_name=="Low-middle SDI" | Deaths$location_name=="Low SDI"),]
-Deaths_low <- Deaths[!(Deaths$location_name=="High-middle SDI" | Deaths$location_name=="Middle SDI" | 
-                          Deaths$location_name=="Low-middle SDI" | Deaths$location_name=="High SDI"),]
-# DALYs
-DALYs_high <- DALYs[!(DALYs$location_name=="High-middle SDI" | DALYs$location_name=="Middle SDI" | 
-                     DALYs$location_name=="Low-middle SDI"| DALYs$location_name=="Low SDI"),]
-DALYs_low <- DALYs[!(DALYs$location_name=="High-middle SDI" | DALYs$location_name=="Middle SDI" | 
-                        DALYs$location_name=="Low-middle SDI"| DALYs$location_name=="High SDI"),]
-# YLLs
-YLLs_high <- YLLs[!(YLLs$location_name=="High-middle SDI" | YLLs$location_name=="Middle SDI" | 
-                   YLLs$location_name=="Low-middle SDI"| YLLs$location_name=="Low SDI"),]
-YLLs_low <- YLLs[!(YLLs$location_name=="High-middle SDI" | YLLs$location_name=="Middle SDI" | 
-                      YLLs$location_name=="Low-middle SDI"| YLLs$location_name=="High SDI"),]
-# Prevalence 
-Prev_high <- Prev[!(Prev$location_name=="High-middle SDI" | Prev$location_name=="Middle SDI" | 
-                 Prev$location_name=="Low-middle SDI"| Prev$location_name=="Low SDI"),]
-Prev_low <- Prev[!(Prev$location_name=="High-middle SDI" | Prev$location_name=="Middle SDI" | 
-                      Prev$location_name=="Low-middle SDI"| Prev$location_name=="High SDI"),]
+Deaths_high<- Deaths_h %>% arrange(year)
 
+Deaths_l <- Deaths[!(Deaths$location_name=="High-middle SDI" | Deaths$location_name=="Middle SDI" | 
+                          Deaths$location_name=="Low-middle SDI" | Deaths$location_name=="High SDI"),]
+Deaths_low<- Deaths_l %>% arrange(year)
+
+# DALYs
+DALYs_h <- DALYs[!(DALYs$location_name=="High-middle SDI" | DALYs$location_name=="Middle SDI" | 
+                     DALYs$location_name=="Low-middle SDI"| DALYs$location_name=="Low SDI"),]
+DALYs_high<- DALYs_h %>% arrange(year)
+
+DALYs_l<- DALYs[!(DALYs$location_name=="High-middle SDI" | DALYs$location_name=="Middle SDI" | 
+                        DALYs$location_name=="Low-middle SDI"| DALYs$location_name=="High SDI"),]
+DALYs_low<- DALYs_l %>% arrange(year)
+
+# YLLs
+YLLs_h <- YLLs[!(YLLs$location_name=="High-middle SDI" | YLLs$location_name=="Middle SDI" | 
+                   YLLs$location_name=="Low-middle SDI"| YLLs$location_name=="Low SDI"),]
+YLLs_high<- YLLs_h %>% arrange(year)
+
+YLLs_l<- YLLs[!(YLLs$location_name=="High-middle SDI" | YLLs$location_name=="Middle SDI" | 
+                      YLLs$location_name=="Low-middle SDI"| YLLs$location_name=="High SDI"),]
+YLLs_low<- YLLs_l %>% arrange(year)
+
+# Prevalence 
+Prev_h <- Prev[!(Prev$location_name=="High-middle SDI" | Prev$location_name=="Middle SDI" | 
+                 Prev$location_name=="Low-middle SDI"| Prev$location_name=="Low SDI"),]
+Prev_high<- Prev_h %>% arrange(year)
+
+Prev_l <- Prev[!(Prev$location_name=="High-middle SDI" | Prev$location_name=="Middle SDI" | 
+                      Prev$location_name=="Low-middle SDI"| Prev$location_name=="High SDI"),]
+Prev_low<- Prev_l %>% arrange(year)
+
+##### TIME SERIES DEATHS #######################################################
+
+# High SDI 
+Death_high.ts <- ts(Deaths_high["val"], start = c(2010),end=c(2019), frequency = 1)
+str(Death_high.ts)
+Death_high.ts
+deaths_high_plot<- autoplot(Death_high.ts) + ylab('High SDI Death Rate') + 
+  labs(title = "High SDI Death Rate",y = "Death Rate", x = "Years") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "#1380A1")
+
+# Low SDI
+Death_low.ts <- ts(Deaths_low["val"], start = c(2010),end=c(2019), frequency = 1)
+str(Death_low.ts)
+Death_low.ts
+deaths_low_plot<- autoplot(Death_low.ts) + ylab('Low SDI Death Rate') + 
+  labs(title = "Low SDI Death Rate",y = "Death Rate", x = "Years") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "red3")
+
+grid.arrange(deaths_high_plot, deaths_low_plot, ncol = 2)
+
+##### TIME SERIES DALYs ########################################################
+
+# High SDI 
+DALYs_high.ts <- ts(DALYs_high["val"], start = c(2010),end=c(2019), frequency = 1)
+str(DALYs_high.ts)
+DALYs_high.ts
+DALYs_high_plot<- autoplot(DALYs_high.ts) + ylab('High SDI DALYs Rate') + 
+  labs(title = "High SDI DALYs Rate",y = "DALYs Rate", x = "Years") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "#1380A1")
+
+# Low SDI
+DALYs_low.ts <- ts(DALYs_low["val"], start = c(2010),end=c(2019), frequency = 1)
+str(DALYs_low.ts)
+DALYs_low.ts
+DALYs_low_plot<- autoplot(DALYs_low.ts) + ylab('Low SDI DALYs Rate') + 
+  labs(title = "Low SDI DALYs Rate",y = "DALYs Rate", x = "Years") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "red3")
+
+grid.arrange(DALYs_high_plot, DALYs_low_plot, ncol = 2)
+
+##### TIME SERIES YLLs #########################################################
+
+# High SDI 
+YLLs_high.ts <- ts(YLLs_high["val"], start = c(2010),end=c(2019), frequency = 1)
+str(YLLs_high.ts)
+YLLs_high.ts
+YLLs_high_plot<- autoplot(YLLs_high.ts) + ylab('High SDI YLLs Rate') + 
+  labs(title = "High SDI YLLs Rate",y = "YLLs Rate", x = "Years") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "#1380A1")
+
+# Low SDI
+YLLs_low.ts <- ts(YLLs_low["val"], start = c(2010),end=c(2019), frequency = 1)
+str(YLLs_low.ts)
+YLLs_low.ts
+YLLs_low_plot<- autoplot(YLLs_low.ts) + ylab('Low SDI YLLs Rate') + 
+  labs(title = "Low SDI YLLs Rate",y = "YLLs Rate", x = "Years") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "red3")
+
+grid.arrange(YLLs_high_plot, YLLs_low_plot, ncol = 2)
+
+##### TIME SERIES Prevalence ###################################################
+
+# High SDI 
+Prev_high.ts <- ts(Prev_high["val"], start = c(2010),end=c(2019), frequency = 1)
+str(Prev_high.ts)
+Prev_high.ts
+Prev_high_plot<- autoplot(Prev_high.ts) + ylab('High Prevalence YLLs Rate') + 
+  labs(title = "High SDI Prevalence Rate",y = "Prevalence Rate", x = "Years") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "#1380A1")
+  
+# Low SDI
+Prev_low.ts <- ts(Prev_low["val"], start = c(2010),end=c(2019), frequency = 1)
+str(Prev_low.ts)
+Prev_low.ts
+Prev_low_plot<- autoplot(Prev_low.ts) + ylab('Low Prevalence YLLs Rate') + 
+  labs(title = "Low SDI Prevalence Rate",y = "Prevalence Rate", x = "Years") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "red3")
+
+grid.arrange(Prev_high_plot, Prev_low_plot, ncol = 2)
 
 
 

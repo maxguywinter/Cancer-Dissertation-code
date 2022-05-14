@@ -235,8 +235,6 @@ deaths_low_plot<- autoplot(Death_low.ts) + ylab('Low SDI Death Rate') +
   theme(plot.background = element_rect(fill = "#d5e4eb")) +
   geom_line(color = "red3")
 
-grid.arrange(deaths_high_plot, deaths_low_plot, ncol = 2)
-
 ##### TIME SERIES DALYs ########################################################
 
 # High SDI 
@@ -256,8 +254,6 @@ DALYs_low_plot<- autoplot(DALYs_low.ts) + ylab('Low SDI DALYs Rate') +
   labs(title = "Low SDI DALYs Rate",y = "DALYs Rate", x = "Years") +
   theme(plot.background = element_rect(fill = "#d5e4eb")) +
   geom_line(color = "red3")
-
-grid.arrange(DALYs_high_plot, DALYs_low_plot, ncol = 2)
 
 ##### TIME SERIES YLLs #########################################################
 
@@ -279,8 +275,6 @@ YLLs_low_plot<- autoplot(YLLs_low.ts) + ylab('Low SDI YLLs Rate') +
   theme(plot.background = element_rect(fill = "#d5e4eb")) +
   geom_line(color = "red3")
 
-grid.arrange(YLLs_high_plot, YLLs_low_plot, ncol = 2)
-
 ##### TIME SERIES Prevalence ###################################################
 
 # High SDI 
@@ -301,7 +295,15 @@ Prev_low_plot<- autoplot(Prev_low.ts) + ylab('Low Prevalence YLLs Rate') +
   theme(plot.background = element_rect(fill = "#d5e4eb")) +
   geom_line(color = "red3")
 
-grid.arrange(Prev_high_plot, Prev_low_plot, ncol = 2)
+##### TIME SERIES Plots ########################################################
+grid.arrange(deaths_high_plot, deaths_low_plot,
+             DALYs_high_plot, DALYs_low_plot,
+             YLLs_high_plot, YLLs_low_plot,
+             Prev_high_plot, Prev_low_plot, ncol = 2, nrow = 4)
+
+
+
+
 
 
 

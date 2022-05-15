@@ -34,6 +34,8 @@ library(scales) # stops ggplot using a scientific notation scale.
 library(forecast) # package provides various functions for computing and visualizing basic time series components
 library(tseries) # package provides various functions for computing and visualizing basic time series components
 library(tidyverse) # for EDA and rearranging data 
+library(rpart) # for building classification and regression trees
+library(rpart.plot) # to plot "rpart" function
 
 ##### DATA INPUT ###############################################################
 ##### Measure data #############################################################

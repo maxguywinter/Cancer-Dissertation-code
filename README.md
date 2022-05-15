@@ -36,7 +36,6 @@ library(tseries) # package provides various functions for computing and visualiz
 library(tidyverse) # for EDA and rearranging data 
 
 ##### DATA INPUT ###############################################################
-
 ##### Measure data #############################################################
 # Deaths Data 
 Deaths <- read.csv("Diss data/Deaths.csv") # Imports the data set. The header=True command tells RStudio to use the first row of the data file as the names of each variable/column. 
@@ -74,6 +73,27 @@ names(Age_death) # Shows the name of variables in the data set.
 summary(Age_death) # Produces summary data (Min, Median, Mean and Max) for the individual variables. 
 str(Age_death) # Shows the observations and variables of the data.
 
+# Age Deaths High SDI
+Death_Age_highSDI <- read.csv("Diss data/Death_Age_HighSDI.csv") # Imports the data set. The header=True command tells RStudio to use the first row of the data file as the names of each variable/column. 
+attach(Death_Age_highSDI) # Attaches the data to your environment so that you can directly refer to the variable by name.
+names(Death_Age_highSDI) # Shows the name of variables in the data set.
+summary(Death_Age_highSDI) # Produces summary data (Min, Median, Mean and Max) for the individual variables. 
+str(Death_Age_highSDI) # Shows the observations and variables of the data.
+
+# Age Deaths Middle SDI
+Death_Age_middleSDI <- read.csv("Diss data/Death_Age_MiddleSDI.csv") # Imports the data set. The header=True command tells RStudio to use the first row of the data file as the names of each variable/column. 
+attach(Death_Age_middleSDI) # Attaches the data to your environment so that you can directly refer to the variable by name.
+names(Death_Age_middleSDI) # Shows the name of variables in the data set.
+summary(Death_Age_middleSDI) # Produces summary data (Min, Median, Mean and Max) for the individual variables. 
+str(Death_Age_middleSDI) # Shows the observations and variables of the data.
+
+# Age Deaths Low SDI
+Death_Age_lowSDI <- read.csv("Diss data/Deaths_Age_LowSDI.csv") # Imports the data set. The header=True command tells RStudio to use the first row of the data file as the names of each variable/column. 
+attach(Death_Age_lowSDI) # Attaches the data to your environment so that you can directly refer to the variable by name.
+names(Death_Age_lowSDI) # Shows the name of variables in the data set.
+summary(Death_Age_lowSDI) # Produces summary data (Min, Median, Mean and Max) for the individual variables. 
+str(Death_Age_lowSDI) # Shows the observations and variables of the data.
+
 # Age DALYs 
 Age_DALY <- read.csv("Diss data/Age_DALY.csv") # Imports the data set. The header=True command tells RStudio to use the first row of the data file as the names of each variable/column. 
 attach(Age_DALY) # Attaches the data to your environment so that you can directly refer to the variable by name.
@@ -95,12 +115,21 @@ names(Age_Prev) # Shows the name of variables in the data set.
 summary(Age_Prev) # Produces summary data (Min, Median, Mean and Max) for the individual variables. 
 str(Age_Prev) # Shows the observations and variables of the data.
 
+# Age Prevalence High SDI
 Prev_Age_highSDI <- read.csv("Diss data/Age_highSDI.csv") # Imports the data set. The header=True command tells RStudio to use the first row of the data file as the names of each variable/column. 
 attach(Prev_Age_highSDI) # Attaches the data to your environment so that you can directly refer to the variable by name.
 names(Prev_Age_highSDI) # Shows the name of variables in the data set.
 summary(Prev_Age_highSDI) # Produces summary data (Min, Median, Mean and Max) for the individual variables. 
 str(Prev_Age_highSDI) # Shows the observations and variables of the data.
 
+# Age Prevalence Middle SDI
+Prev_Age_middleSDI <- read.csv("Diss data/Age_middleSDI.csv") # Imports the data set. The header=True command tells RStudio to use the first row of the data file as the names of each variable/column. 
+attach(Prev_Age_middleSDI) # Attaches the data to your environment so that you can directly refer to the variable by name.
+names(Prev_Age_middleSDI) # Shows the name of variables in the data set.
+summary(Prev_Age_middleSDI) # Produces summary data (Min, Median, Mean and Max) for the individual variables. 
+str(Prev_Age_middleSDI) # Shows the observations and variables of the data.
+
+# Age Prevalence Low SDI
 Prev_Age_lowSDI <- read.csv("Diss data/Age_lowSDI.csv") # Imports the data set. The header=True command tells RStudio to use the first row of the data file as the names of each variable/column. 
 attach(Prev_Age_lowSDI) # Attaches the data to your environment so that you can directly refer to the variable by name.
 names(Prev_Age_lowSDI) # Shows the name of variables in the data set.
@@ -108,31 +137,30 @@ summary(Prev_Age_lowSDI) # Produces summary data (Min, Median, Mean and Max) for
 str(Prev_Age_lowSDI) # Shows the observations and variables of the data.
 
 ##### DATA CODING/ CLEANING ####################################################
-
 ##### Measure data #############################################################
 # Deaths Data 
 Deaths[Deaths == "" | Deaths == " "] <- NA # Makes any missing data a NA. 
 Deaths[Deaths == "N/A" | Deaths == "n/a" | Deaths == "N/a"| Deaths == "-"] <- NA # Standardizes NA values (N/A, n/a, N/a) to NA. 
 Deaths$location_name <- factor(Deaths$location_name)   
-Deaths <- subset(Deaths, select =-c(1,3,5,6,7,9,11,15,16)) # upper and lower values 
+Deaths <- subset(Deaths, select =-c(1,3,5,6,7,9,11,15,16)) # Removes upper and lower values 
 
 # DALYs Data 
 DALYs[DALYs == "" | DALYs == " "] <- NA # Makes any missing data a NA. 
 DALYs[DALYs == "N/A" | DALYs == "n/a" | DALYs == "N/a"| DALYs == "-"] <- NA # Standardizes NA values (N/A, n/a, N/a) to NA. 
 DALYs$location_name <- factor(DALYs$location_name)  
-DALYs <- subset(DALYs, select =-c(1,3,5,6,7,9,11,15,16)) # upper and lower values 
+DALYs <- subset(DALYs, select =-c(1,3,5,6,7,9,11,15,16)) 
 
 # YLLS Data 
 YLLs[YLLs == "" | YLLs == " "] <- NA # Makes any missing data a NA. 
 YLLs[YLLs == "N/A" | YLLs == "n/a" | YLLs == "N/a"| YLLs == "-"] <- NA # Standardizes NA values (N/A, n/a, N/a) to NA. 
 YLLs$location_name <- factor(YLLs$location_name)  
-YLLs <- subset(YLLs, select =-c(1,3,5,6,7,9,11,15,16)) # upper and lower values 
+YLLs <- subset(YLLs, select =-c(1,3,5,6,7,9,11,15,16))  
 
 # Prevalence Data 
 Prev[Prev == "" | Prev == " "] <- NA # Makes any missing data a NA. 
 Prev[Prev == "N/A" | Prev == "n/a" | Prev == "N/a"| Prev == "-"] <- NA # Standardizes NA values (N/A, n/a, N/a) to NA. 
 Prev$location_name <- factor(Prev$location_name)  
-Prev <- subset(Prev, select =-c(1,3,5,6,7,9,11,15,16)) # upper and lower values 
+Prev <- subset(Prev, select =-c(1,3,5,6,7,9,11,15,16)) 
 
 ##### Age data #################################################################
 # Age Deaths 
@@ -140,40 +168,70 @@ Age_death[Age_death == "" | Age_death == " "] <- NA # Makes any missing data a N
 Age_death[Age_death == "N/A" | Age_death == "n/a" | Age_death == "N/a"| Age_death == "-"] <- NA # Standardizes NA values (N/A, n/a, N/a) to NA. 
 Age_death$location_name <- factor(Age_death$location_name)  
 Age_death$age_name <- factor(Age_death$age_name)  
-Age_death <- subset(Age_death, select =-c(1,3,5,6,7,9,11,15,16)) # upper and lower values 
+Age_death <- subset(Age_death, select =-c(1,3,5,6,7,9,11,15,16)) 
+
+# Age Deaths High SDI
+Death_Age_highSDI[Death_Age_highSDI == "" | Death_Age_highSDI == " "] <- NA # Makes any missing data a NA. 
+Death_Age_highSDI[Death_Age_highSDI == "N/A" | Death_Age_highSDI == "n/a" | Death_Age_highSDI == "N/a"| Death_Age_highSDI == "-"] <- NA # Standardizes NA values (N/A, n/a, N/a) to NA. 
+Death_Age_highSDI$location<- factor(Death_Age_highSDI$location)  
+Death_Age_highSDI$age <- factor(Death_Age_highSDI$age)  
+Death_Age_highSDI <- subset(Death_Age_highSDI, select =-c(1,3,5,6,9,10)) 
+
+# Age Deaths Middle SDI
+Death_Age_middleSDI[Death_Age_middleSDI == "" | Death_Age_middleSDI == " "] <- NA # Makes any missing data a NA. 
+Death_Age_middleSDI[Death_Age_middleSDI == "N/A" | Death_Age_middleSDI == "n/a" | Death_Age_middleSDI == "N/a"| Death_Age_middleSDI == "-"] <- NA # Standardizes NA values (N/A, n/a, N/a) to NA. 
+Death_Age_middleSDI$location<- factor(Death_Age_middleSDI$location)  
+Death_Age_middleSDI$age <- factor(Death_Age_middleSDI$age)  
+Death_Age_middleSDI <- subset(Death_Age_middleSDI, select =-c(1,3,5,6,9,10)) 
+
+# Age Deaths Low SDI
+Death_Age_lowSDI[Death_Age_lowSDI == "" | Death_Age_lowSDI == " "] <- NA # Makes any missing data a NA. 
+Death_Age_lowSDI[Death_Age_lowSDI == "N/A" | Death_Age_lowSDI == "n/a" | Death_Age_lowSDI == "N/a"| Death_Age_lowSDI == "-"] <- NA # Standardizes NA values (N/A, n/a, N/a) to NA. 
+Death_Age_lowSDI$location<- factor(Death_Age_lowSDI$location)  
+Death_Age_lowSDI$age <- factor(Death_Age_lowSDI$age)  
+Death_Age_lowSDI <- subset(Death_Age_lowSDI, select =-c(1,3,5,6,9,10)) 
 
 # Age DALYs 
 Age_DALY[Age_DALY == "" | Age_DALY == " "] <- NA # Makes any missing data a NA. 
 Age_DALY[Age_DALY == "N/A" | Age_DALY == "n/a" | Age_DALY == "N/a"| Age_DALY == "-"] <- NA # Standardizes NA values (N/A, n/a, N/a) to NA. 
 Age_DALY$location_name <- factor(Age_DALY$location_name)  
 Age_DALY$age_name <- factor(Age_DALY$age_name)   
-Age_DALY <- subset(Age_DALY, select =-c(1,3,5,6,7,9,11,15,16)) # upper and lower values 
+Age_DALY <- subset(Age_DALY, select =-c(1,3,5,6,7,9,11,15,16)) 
 
 # Age YLLs 
 Age_YLL[Age_YLL == "" | Age_YLL == " "] <- NA # Makes any missing data a NA. 
 Age_YLL[Age_YLL == "N/A" | Age_YLL == "n/a" | Age_YLL == "N/a"| Age_YLL == "-"] <- NA # Standardizes NA values (N/A, n/a, N/a) to NA. 
 Age_YLL$location_name <- factor(Age_YLL$location_name)  
 Age_YLL$age_name <- factor(Age_YLL$age_name)   
-Age_YLL <- subset(Age_YLL, select =-c(1,3,5,6,7,9,11,15,16)) # upper and lower values 
+Age_YLL <- subset(Age_YLL, select =-c(1,3,5,6,7,9,11,15,16)) 
 
 # Age Prevalence 
 Age_Prev[Age_Prev == "" | Age_Prev == " "] <- NA # Makes any missing data a NA. 
 Age_Prev[Age_Prev == "N/A" | Age_Prev == "n/a" | Age_Prev == "N/a"| Age_Prev == "-"] <- NA # Standardizes NA values (N/A, n/a, N/a) to NA. 
 Age_Prev$location_name <- factor(Age_Prev$location_name)
 Age_Prev$age_name <- factor(Age_Prev$age_name) 
-Age_Prev <- subset(Age_Prev, select =-c(1,3,5,6,7,9,11,15,16)) # upper and lower values 
+Age_Prev <- subset(Age_Prev, select =-c(1,3,5,6,7,9,11,15,16))
 
+# Age Prevalence High SDI
 Prev_Age_highSDI[Prev_Age_highSDI == "" | Prev_Age_highSDI == " "] <- NA # Makes any missing data a NA. 
 Prev_Age_highSDI[Prev_Age_highSDI == "N/A" | Prev_Age_highSDI == "n/a" | Prev_Age_highSDI == "N/a"| Prev_Age_highSDI == "-"] <- NA # Standardizes NA values (N/A, n/a, N/a) to NA. 
 Prev_Age_highSDI$location<- factor(Prev_Age_highSDI$location)  
-Prev_Age_highSDI$age <- factor(Prev_Age_highSDI$age)  
-Prev_Age_highSDI <- subset(Prev_Age_highSDI, select =-c(1,3,5,6,9,10)) # upper and lower values 
+Prev_Age_highSDI$age <- factor(Prev_Age_highSDI$high_SDI_age)  
+Prev_Age_highSDI <- subset(Prev_Age_highSDI, select =-c(1,3,5,6,9,10)) 
 
+# Age Prevalence Middle SDI
+Prev_Age_middleSDI[Prev_Age_middleSDI == "" | Prev_Age_middleSDI == " "] <- NA # Makes any missing data a NA. 
+Prev_Age_middleSDI[Prev_Age_middleSDI == "N/A" | Prev_Age_middleSDI == "n/a" | Prev_Age_middleSDI == "N/a"| Prev_Age_middleSDI == "-"] <- NA # Standardizes NA values (N/A, n/a, N/a) to NA. 
+Prev_Age_middleSDI$location<- factor(Prev_Age_middleSDI$location)  
+Prev_Age_middleSDI$age <- factor(Prev_Age_middleSDI$middle_SDI_age)  
+Prev_Age_middleSDI <- subset(Prev_Age_highSDI, select =-c(1,3,5,6,9,10)) 
+
+# Age Prevalence Low SDI
 Prev_Age_lowSDI[Prev_Age_lowSDI == "" | Prev_Age_lowSDI == " "] <- NA # Makes any missing data a NA. 
 Prev_Age_lowSDI[Prev_Age_lowSDI == "N/A" | Prev_Age_lowSDI == "n/a" | Prev_Age_lowSDI == "N/a"| Prev_Age_lowSDI == "-"] <- NA # Standardizes NA values (N/A, n/a, N/a) to NA. 
 Prev_Age_lowSDI$location<- factor(Prev_Age_lowSDI$location)  
-Prev_Age_lowSDI$age <- factor(Prev_Age_lowSDI$age)  
-Prev_Age_lowSDI <- subset(Prev_Age_lowSDI, select =-c(1,3,5,6,9,10)) # upper and lower values 
+Prev_Age_lowSDI$age <- factor(Prev_Age_lowSDI$low_SDI_age)  
+Prev_Age_lowSDI <- subset(Prev_Age_lowSDI, select =-c(1,3,5,6,9,10)) 
 
 # Check for missing data
 ##### Measure data #############################################################
@@ -185,12 +243,17 @@ missmap(Prev, col=c("red3", "#1380A1"),legend = TRUE) # Checks for missing data 
 
 ##### Age data #################################################################
 missmap(Age_death, col=c("red3", "#1380A1"),legend = TRUE) # Checks for missing data by producing a map (red points indicts missing data). 
+missmap(Death_Age_highSDI, col=c("red3", "#1380A1"),legend = TRUE) # Checks for missing data by producing a map (red points indicts missing data).
+missmap(Death_Age_middleSDI, col=c("red3", "#1380A1"),legend = TRUE) # Checks for missing data by producing a map (red points indicts missing data). 
+missmap(Death_Age_lowSDI, col=c("red3", "#1380A1"),legend = TRUE) # Checks for missing data by producing a map (red points indicts missing data). 
 missmap(Age_DALY, col=c("red3", "#1380A1"),legend = TRUE) # Checks for missing data by producing a map (red points indicts missing data). 
 missmap(Age_YLL, col=c("red3", "#1380A1"),legend = TRUE) # Checks for missing data by producing a map (red points indicts missing data). 
 missmap(Age_Prev, col=c("red3", "#1380A1"),legend = TRUE) # Checks for missing data by producing a map (red points indicts missing data). 
+missmap(Prev_Age_highSDI, col=c("red3", "#1380A1"),legend = TRUE) # Checks for missing data by producing a map (red points indicts missing data). 
+missmap(Prev_Age_middleSDI, col=c("red3", "#1380A1"),legend = TRUE) # Checks for missing data by producing a map (red points indicts missing data). 
+missmap(Prev_Age_lowSDI, col=c("red3", "#1380A1"),legend = TRUE) # Checks for missing data by producing a map (red points indicts missing data). 
 
 ##### EXPLORATORY DATA ANALYSIS ################################################
-
 # To rearrange locations in bar graphs  
 Deaths$location_name <- factor(Deaths$location_name, levels = c("High SDI", "High-middle SDI", "Middle SDI", "Low-middle SDI", "Low SDI"))
 DALYs$location_name <- factor(DALYs$location_name, levels = c("High SDI", "High-middle SDI", "Middle SDI", "Low-middle SDI", "Low SDI"))
@@ -201,41 +264,56 @@ YLLs$location_name <- factor(YLLs$location_name, levels = c("High SDI", "High-mi
 Cdeaths <- ggplot(Deaths, aes(x =location_name, y = val, fill = location_name)) + 
   geom_bar(stat = "identity") + 
   labs(title = "Death Rate", x= "", y= "Deaths") +
-  scale_colour_economist() +
-  scale_y_continuous(labels = comma)+
+  scale_fill_manual(values = c("High SDI" = "#1380A1", "High-middle SDI" = "mediumslateblue",
+                               "Middle SDI" = "forestgreen", "Low-middle SDI" = "orange",
+                               "Low SDI" = "red3")) +
+  scale_y_continuous(labels = comma) +
+  guides(fill = guide_legend(title = "Level of Development")) +
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank(),
+        legend.position = "top",
+        legend.background = element_rect(colour = 1),
         plot.background = element_rect(fill = "#d5e4eb")) # Background color of the plot
 
 CDALY <- ggplot(DALYs, aes(x =location_name, y = val, fill = location_name)) + 
   geom_bar(stat = "identity") + 
   labs(title = "DALYs Rate", x= "", y= "DALYs") +
-  scale_colour_economist() +
+  scale_fill_manual(values = c("High SDI" = "#1380A1", "High-middle SDI" = "mediumslateblue",
+                               "Middle SDI" = "forestgreen", "Low-middle SDI" = "orange",
+                               "Low SDI" = "red3")) +
   scale_y_continuous(labels = comma)+
   theme(axis.text.x = element_blank(),
         axis.ticks.x=element_blank(),
+        legend.position = "none",
         plot.background = element_rect(fill = "#d5e4eb"))
 
 Cprev <- ggplot(Prev, aes(x =location_name, y = val, fill = location_name)) + 
   geom_bar(stat = "identity") + 
   labs(title = "Prevalence Rate", x= "", y= "Prevalence") +
-  scale_colour_economist() +
+  scale_fill_manual(values = c("High SDI" = "#1380A1", "High-middle SDI" = "mediumslateblue",
+                               "Middle SDI" = "forestgreen", "Low-middle SDI" = "orange",
+                               "Low SDI" = "red3")) +
   scale_y_continuous(labels = comma)+
   theme(axis.text.x = element_blank(),
         axis.ticks.x=element_blank(),
+        legend.position = "none",
         plot.background = element_rect(fill = "#d5e4eb"))
 
 CYLL <- ggplot(YLLs, aes(x =location_name, y = val, fill = location_name)) + 
   geom_bar(stat = "identity") + 
   labs(title = "YLLs Rate", x= "", y= "YLLs") +
-  scale_colour_economist() +
+  scale_fill_manual(values = c("High SDI" = "#1380A1", "High-middle SDI" = "mediumslateblue",
+                               "Middle SDI" = "forestgreen", "Low-middle SDI" = "orange",
+                               "Low SDI" = "red3")) +
   scale_y_continuous(labels = comma) +
   theme(axis.text.x = element_blank(),
         axis.ticks.x=element_blank(),
+        legend.position = "none",
         plot.background = element_rect(fill = "#d5e4eb")) 
 
 ggarrange(Cdeaths, CDALY, Cprev,CYLL + rremove("x.text"), 
-          ncol = 2, nrow = 2) # This code arranges the above figures into one plot in order to see all figures better and easier.
+          ncol = 2, nrow = 2, 
+          common.legend = TRUE, legend="top") # This code arranges the above figures into one plot in order to see all figures better and easier.
 
 #### Box plots: Cancer Deaths, DALYs, YLLs, Prevalence rates ################### 
 box1 <- ggplot(Deaths, aes(y = val)) +
@@ -266,19 +344,52 @@ ggarrange(box1, box2, box3,box4 + rremove("x.text"),
           ncol = 2, nrow = 2) # This code arranges the above figures into one plot in order to see all figures better and easier.
 
 ##### AGE DATA ANALYSIS ########################################################
+# Age Deaths 
+Death_Age_highSDI_plot <- ggplot(Death_Age_highSDI, aes(x = year, y = val, color = age)) +
+  labs(title = "High SDI Age Death Rate",y = "Death Rate", x = "Years") +
+  theme(legend.position = "none",
+        plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line()
 
-ggplot(Prev_Age_highSDI, aes(x = year, y = val, color = high_SDI_age)) +
+Death_Age_middleSDI_plot <- ggplot(Death_Age_middleSDI, aes(x = year, y = val, color = age)) +
+  labs(title = "Middle SDI Age Death Rate",y = "Death Rate", x = "Years") +
+  scale_fill_discrete(name = "Age Group")+
+  theme(legend.position = "top", 
+        legend.background = element_rect(colour = 1),
+        plot.background = element_rect(fill = "#d5e4eb")) +
   geom_line() 
 
-ggplot(Prev_Age_lowSDI, aes(x = year, y = val, color = low_SDI_age)) +
+Death_Age_lowSDI_plot <- ggplot(Death_Age_lowSDI, aes(x = year, y = val, color = age)) +
+  labs(title = "Low SDI Age Death Rate",y = "Death Rate", x = "Years") +
+  theme(legend.position = "none",
+        plot.background = element_rect(fill = "#d5e4eb")) +
   geom_line() 
 
+# Age Prevalence 
+Prev_Age_highSDI_plot <- ggplot(Prev_Age_highSDI, aes(x = year, y = val, color = high_SDI_age)) +
+  labs(title = "High SDI Age Prevalence Rate",y = "Prevalence Rate", x = "Years") +
+  theme(legend.position = "none",
+        plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line() 
 
+Prev_Age_middleSDI_plot <- ggplot(Prev_Age_middleSDI, aes(x = year, y = val, color = middle_SDI_age)) +
+  labs(title = "Middle SDI Age Prevalence Rate",y = "Prevalence Rate", x = "Years") +
+  theme(legend.position = "none", 
+        plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line() 
 
+Prev_Age_lowSDI_plot <- ggplot(Prev_Age_lowSDI, aes(x = year, y = val, color = low_SDI_age)) +
+  labs(title = "Low SDI Age Prevalence Rate",y = "Prevalence Rate", x = "Years") +
+  theme(legend.position = "none",
+        plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line() 
 
+ggarrange(Death_Age_highSDI_plot, Death_Age_middleSDI_plot, Death_Age_lowSDI_plot,
+          Prev_Age_highSDI_plot,Prev_Age_middleSDI_plot, Prev_Age_lowSDI_plot + rremove("x.text"), 
+          ncol = 3, nrow = 2,
+          common.legend = TRUE, legend="top") # This code arranges the above figures into one plot in order to see all figures better and easier.
 
 ##### TIME SERIES ANALYSIS #####################################################
-
 ##### TIME SERIES DATA CODING/ CLEANING ########################################
 # Deaths 
 Deaths_h<- Deaths[!(Deaths$location_name=="High-middle SDI" | Deaths$location_name=="Middle SDI" | 
@@ -292,29 +403,29 @@ Deaths_middle<- Deaths_m %>% arrange(year) # rearranges year data my year from 2
 
 Deaths_l <- Deaths[!(Deaths$location_name=="High-middle SDI" | Deaths$location_name=="Middle SDI" | 
                           Deaths$location_name=="Low-middle SDI" | Deaths$location_name=="High SDI"),]
-Deaths_low<- Deaths_l %>% arrange(year)
+Deaths_low<- Deaths_l %>% arrange(year) # rearranges year data my year from 2010 to 2019 
 
 # DALYs
 DALYs_h <- DALYs[!(DALYs$location_name=="High-middle SDI" | DALYs$location_name=="Middle SDI" | 
                      DALYs$location_name=="Low-middle SDI"| DALYs$location_name=="Low SDI"),]
-DALYs_high<- DALYs_h %>% arrange(year)
+DALYs_high<- DALYs_h %>% arrange(year) # rearranges year data my year from 2010 to 2019 
 
 DALYs_m <- DALYs[!(DALYs$location_name=="High-middle SDI" | DALYs$location_name=="High SDI" | 
                      DALYs$location_name=="Low-middle SDI"| DALYs$location_name=="Low SDI"),]
-DALYs_middle<- DALYs_m %>% arrange(year)
+DALYs_middle<- DALYs_m %>% arrange(year) # rearranges year data my year from 2010 to 2019 
 
 DALYs_l<- DALYs[!(DALYs$location_name=="High-middle SDI" | DALYs$location_name=="Middle SDI" | 
                         DALYs$location_name=="Low-middle SDI"| DALYs$location_name=="High SDI"),]
-DALYs_low<- DALYs_l %>% arrange(year)
+DALYs_low<- DALYs_l %>% arrange(year) # rearranges year data my year from 2010 to 2019 
 
 # YLLs
 YLLs_h <- YLLs[!(YLLs$location_name=="High-middle SDI" | YLLs$location_name=="Middle SDI" | 
                    YLLs$location_name=="Low-middle SDI"| YLLs$location_name=="Low SDI"),]
-YLLs_high<- YLLs_h %>% arrange(year)
+YLLs_high<- YLLs_h %>% arrange(year) # rearranges year data my year from 2010 to 2019 
 
 YLLs_m <- YLLs[!(YLLs$location_name=="High-middle SDI" | YLLs$location_name=="High SDI" | 
                    YLLs$location_name=="Low-middle SDI"| YLLs$location_name=="Low SDI"),]
-YLLs_middle<- YLLs_m %>% arrange(year)
+YLLs_middle<- YLLs_m %>% arrange(year) # rearranges year data my year from 2010 to 2019 
 
 YLLs_l<- YLLs[!(YLLs$location_name=="High-middle SDI" | YLLs$location_name=="Middle SDI" | 
                       YLLs$location_name=="Low-middle SDI"| YLLs$location_name=="High SDI"),]
@@ -323,15 +434,15 @@ YLLs_low<- YLLs_l %>% arrange(year)
 # Prevalence 
 Prev_h <- Prev[!(Prev$location_name=="High-middle SDI" | Prev$location_name=="Middle SDI" | 
                  Prev$location_name=="Low-middle SDI"| Prev$location_name=="Low SDI"),]
-Prev_high<- Prev_h %>% arrange(year)
+Prev_high<- Prev_h %>% arrange(year) # rearranges year data my year from 2010 to 2019 
 
 Prev_m <- Prev[!(Prev$location_name=="High-middle SDI" | Prev$location_name=="High SDI" | 
                    Prev$location_name=="Low-middle SDI"| Prev$location_name=="Low SDI"),]
-Prev_middle<- Prev_m %>% arrange(year)
+Prev_middle<- Prev_m %>% arrange(year) # rearranges year data my year from 2010 to 2019 
 
 Prev_l <- Prev[!(Prev$location_name=="High-middle SDI" | Prev$location_name=="Middle SDI" | 
                       Prev$location_name=="Low-middle SDI"| Prev$location_name=="High SDI"),]
-Prev_low<- Prev_l %>% arrange(year)
+Prev_low<- Prev_l %>% arrange(year) # rearranges year data my year from 2010 to 2019 
 
 ##### TIME SERIES DEATHS #######################################################
 # High SDI 
@@ -451,30 +562,6 @@ grid.arrange(deaths_high_plot, deaths_middle_plot, deaths_low_plot,
              YLLs_high_plot,YLLs_middle_plot, YLLs_low_plot,
              Prev_high_plot,Prev_middle_plot, Prev_low_plot, 
              ncol = 3, nrow = 4)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

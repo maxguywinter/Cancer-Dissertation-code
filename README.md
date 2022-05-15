@@ -36,6 +36,7 @@ library(tseries) # package provides various functions for computing and visualiz
 library(tidyverse) # for EDA and rearranging data 
 library(rpart) # for building classification and regression trees
 library(rpart.plot) # to plot "rpart" function
+library(pROC) # to plot ROC curve
 
 ##### DATA INPUT ###############################################################
 ##### Measure data #############################################################
@@ -1186,19 +1187,41 @@ grid.arrange(dietary.daly.high.plot, dietary.daly.med.plot, occupational.daly.lo
              
              
 ##### classification ########################################################
-df_cluster<- IHME.GBD_2019_DATA.9067a093.1
+decision_tree<- IHME.GBD_2019_DATA.f17ca5d2.1
 
-df_cluster <- subset(df_cluster, select =-c(1,3,4,5,7,8,9,11,12))
+view(decision_tree)
 
-df_cluster <- na.omit(df_cluster) # removing any missing data.
+decision_tree$location <- factor(decision_tree$location)
+decision_tree$rei <- factor(decision_tree$rei)
 
-tree_full <- rpart(df_cluster$location ~., data= df_cluster, control=rpart.control(minsplit=2, cp=0))
+decision_tree <- na.omit(decision_tree) # removing any missing data.
 
-rpart.plot(tree_full,extra=2,under=TRUE,varlen=0,faclen=0,cex=.7)             
+tree_full2 <- rpart(decision_tree$location ~., data= decision_tree, control=rpart.control(minsplit=2, cp=0))
 
+rpart.plot(tree_full2,extra=2,under=TRUE,varlen=0,faclen=0,cex=.7)
 
+#creating a confusion table to display the tree based on Sex.
+confusion_table<-table(decision_tree$location, 	predict(tree_full2,decision_tree,type="class"))
+#viewing the confusion_table.
+confusion_table
 
+correct<- sum(diag(confusion_table))
+error<- sum(confusion_table)-correct
+accuracy<-correct / (correct+error);accuracy
 
+library(caret);confusionMatrix(data = predict(tree_full2, decision_tree, type="class"), reference = decision_tree$location)
 
-
-
+p1 <- predict(tree_full2, decision_tree, type = 'prob')
+p1 <- p1[,2]
+r <- multiclass.roc(decision_tree$location, p1, percent = TRUE)
+roc <- r[['rocs']]
+r1 <- roc[[1]]
+plot.roc(r1,
+         print.auc=TRUE,
+         auc.polygon=TRUE,
+         grid=c(0.1, 0.2),
+         grid.col=c("green", "red"),
+         max.auc.polygon=TRUE,
+         auc.polygon.col="lightblue",
+         print.thres=TRUE,
+         main= 'ROC Curve')

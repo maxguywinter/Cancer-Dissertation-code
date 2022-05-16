@@ -331,6 +331,30 @@ ggarrange(box1, box2, box3,box4 + rremove("x.text"),
 summary(Prev)
 
 
+#### Bar graphs : SDI analysis low and high ################# 
+
+p<-ggplot(data=sdi_2010_2019, aes(x=sdi_2010_2019$year, y=sdi_2010_2019$`low-SDI`)) +
+  geom_bar(stat="identity", fill='#1380A1')+
+  theme(plot.background = element_rect(fill = "#d5e4eb"))
+
+p + labs(title="Plot of low SDI for the years 2010 to 2019", 
+         x="year", y = "total number of countries with a SDI score of <0.5")
+
+r<-ggplot(data=sdi_2010_2019, aes(x=sdi_2010_2019$year, y=sdi_2010_2019$`high-SDI`)) +
+  geom_bar(stat="identity", fill="red3") +
+  theme(plot.background = element_rect(fill = "#d5e4eb"))
+
+r + labs(title="Plot of high SDI for the years 2010 to 2019", 
+         x="year", y = "total number of countries with a SDI score of >0.5")
+
+grid.arrange(p + labs(title="Plot of low SDI for the years 2010 to 2019", 
+                      x="year", y = "total number of countries with a SDI score of <0.5"), r + labs(title="Plot of high SDI for the years 2010 to 2019", 
+                                              x="year", y = "total number of countries with a SDI score of >0.5"),  ncol = 1, nrow = 2)
+
+sum(sdi_2010_2019$`low-SDI`)
+mean(sdi_2010_2019$`low-SDI`)
+mean(sdi_2010_2019$`high-SDI`)
+sum(sdi_2010_2019$`high-SDI`)
 
 ##### AGE DATA ANALYSIS ########################################################
 # Age Deaths 
@@ -545,16 +569,607 @@ Prev_low_plot<- autoplot(Prev_low.ts) + ylab('Low Prevalence YLLs Rate') +
   theme(plot.background = element_rect(fill = "#d5e4eb")) +
   geom_line(color = "red3")
 
+
+#tobacco time series analysis
+
+tobacco.daly.high.sdi<- IHME.GBD_2019_DATA.4ba7dc1e.1
+tobacco.daly.high<- tobacco.daly.high.sdi %>% arrange(year)
+tobacco.daly.high.ts <- ts(tobacco.daly.high["val"], start = c(2010),end=c(2019), frequency = 1)
+
+tobacco.daly.high.plot<- autoplot(tobacco.daly.high.ts)+ 
+  ylab('DALY Rate of tobacco risk') + 
+  labs(title="DALY in high countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "#1380A1")
+
+tobacco.daly.med.sdi<- IHME.GBD_2019_DATA.1130d03f.1
+tobacco.daly.med<- tobacco.daly.med.sdi %>% arrange(year)
+tobacco.daly.med.ts <- ts(tobacco.daly.med["val"], start = c(2010),end=c(2019), frequency = 1)
+
+tobacco.daly.med.plot<- autoplot(tobacco.daly.med.ts)+ 
+  ylab('DALY Rate of tobacco risk') + 
+  labs(title="DALY in medium SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "forestgreen")
+
+tobacco.daly.low<- tobacco.daly.low.sdi %>% arrange(year)
+
+tobacco.daly.low.ts <- ts(tobacco.daly.low["val"], start = c(2010),end=c(2019), frequency = 1)
+
+tobacco.daly.low.plot<- autoplot(tobacco.daly.low.ts)+ 
+  ylab('DALY Rate of tobacco risk') + 
+  labs(title="DALY in low SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "red3")
+
+tobacco.deaths.high.sdi<- IHME.GBD_2019_DATA.be5ea5c6.1
+
+tobacco.deaths.high<- tobacco.deaths.high.sdi %>% arrange(year)
+
+tobacco.deaths.high.ts <- ts(tobacco.deaths.high["val"], start = c(2010),end=c(2019), frequency = 1)
+
+tobacco.deaths.high.plot<- autoplot(tobacco.deaths.high.ts)+ 
+  ylab('Death Rate of tobacco risk') + 
+  labs(title="Deaths in High SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "#1380A1") 
+
+tobacco.deaths.med.sdi<- IHME.GBD_2019_DATA.3ad13977.1
+
+tobacco.deaths.med<- tobacco.deaths.med.sdi %>% arrange(year)
+
+tobacco.deaths.med.ts <- ts(tobacco.deaths.med["val"], start = c(2010),end=c(2019), frequency = 1)
+
+tobacco.deaths.med.plot<- autoplot(tobacco.deaths.med.ts)+ 
+  ylab('Death Rate of tobacco risk') + 
+  labs(title="Deaths in medium SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "forestgreen")
+
+tobacco.deaths.low.sdi<- IHME.GBD_2019_DATA.75556e39.1
+
+tobacco.deaths.low<- tobacco.deaths.low.sdi %>% arrange(year)
+
+tobacco.deaths.low.ts <- ts(tobacco.deaths.low["val"], start = c(2010),end=c(2019), frequency = 1)
+
+tobacco.deaths.low.plot<- autoplot(tobacco.deaths.low.ts)+ 
+  ylab('Death Rate of tobacco risk') + 
+  labs(title="Deaths in Low SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "red3")
+
+tobacco.yld.low.sdi<- IHME.GBD_2019_DATA.8dbbab14.1
+
+tobacco.yld.low<- tobacco.yld.low.sdi %>% arrange(year)
+
+tobacco.yld.low.ts <- ts(tobacco.yld.low["val"], start = c(2010),end=c(2019), frequency = 1)
+
+tobacco.yld.low.plot<- autoplot(tobacco.yld.low.ts)+ 
+  ylab('YLD Rate of tobacco risk') + 
+  labs(title="YLD in low SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "red3")
+
+tobacco.yld.med.sdi<- IHME.GBD_2019_DATA.4ffeb157.1
+
+tobacco.yld.med<- tobacco.yld.med.sdi %>% arrange(year)
+
+tobacco.yld.med.ts <- ts(tobacco.yld.med["val"], start = c(2010),end=c(2019), frequency = 1)
+
+tobacco.yld.med.plot<- autoplot(tobacco.yld.med.ts)+ 
+  ylab('YLD Rate of tobacco') + 
+  labs(title="YLD in medium SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "forestgreen")
+
+tobacco.yld.high.sdi<- IHME.GBD_2019_DATA.23e75cd4.1
+
+tobacco.yld.high<- tobacco.yld.high.sdi %>% arrange(year)
+
+tobacco.yld.high.ts <- ts(tobacco.yld.high["val"], start = c(2010),end=c(2019), frequency = 1)
+
+tobacco.yld.high.plot<- autoplot(tobacco.yld.high.ts)+ 
+  ylab('YLD Rate of tobacco risk') + 
+  labs(title="YLD in high SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "#1380A1")
+
+tobacco.yll.high.sdi<- IHME.GBD_2019_DATA.87e34f9b.1
+
+tobacco.yll.high<- tobacco.yll.high.sdi %>% arrange(year)
+
+tobacco.yll.high.ts <- ts(tobacco.yll.high["val"], start = c(2010),end=c(2019), frequency = 1)
+
+tobacco.yll.high.plot<- autoplot(tobacco.yll.high.ts)+ 
+  ylab('YLL Rate of tobacco risk') + 
+  labs(title="YLL in medium SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "#1380A1")
+
+tobacco.yll.med.sdi<- IHME.GBD_2019_DATA.ffccd1d8.1
+
+tobacco.yll.med<- tobacco.yll.med.sdi %>% arrange(year)
+
+tobacco.yll.med.ts <- ts(tobacco.yll.med["val"], start = c(2010),end=c(2019), frequency = 1)
+
+tobacco.yll.med.plot<- autoplot(tobacco.yll.med.ts)+ 
+  ylab('YLL Rate of tobacco risk') + 
+  labs(title="YLL in medium SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "forestgreen")
+
+tobacco.yll.low.sdi<- IHME.GBD_2019_DATA.62b70de9.1
+
+tobacco.yll.low<- tobacco.yll.low.sdi %>% arrange(year)
+
+tobacco.yll.low.ts <- ts(tobacco.yll.low["val"], start = c(2010),end=c(2019), frequency = 1)
+
+tobacco.yll.low.plot<-autoplot(tobacco.yll.low.ts)+ 
+  ylab('YLL Rate of tobacco risk') + 
+  labs(title="YLL in low SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "red3")
+
+# air pollution time series analysis 
+
+air.daly.high.sdi<- IHME.GBD_2019_DATA.c30c7f1b.1
+
+air.daly.high<- air.daly.high.sdi %>% arrange(year)
+
+air.daly.high.ts <- ts(air.daly.high["val"], start = c(2010),end=c(2019), frequency = 1)
+
+air.daly.high.plot<- autoplot(air.daly.high.ts)+ 
+  ylab('DALY Rate of air pollution risk') + 
+  labs(title="DALY in high SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "#1380A1")
+
+air.daly.med.sdi<- IHME.GBD_2019_DATA.d23e2034.1
+
+air.daly.med<- air.daly.med.sdi %>% arrange(year)
+
+air.daly.med.ts <- ts(air.daly.med["val"], start = c(2010),end=c(2019), frequency = 1)
+
+air.daly.med.plot<- autoplot(air.daly.med.ts)+ 
+  ylab('DALY Rate of air pollution risk') + 
+  labs(title="DALY medium SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "forestgreen")
+
+air.daly.low.sdi<- IHME.GBD_2019_DATA.fdf39169.1
+
+air.daly.low<- air.daly.low.sdi %>% arrange(year)
+
+air.daly.low.ts <- ts(air.daly.low["val"], start = c(2010),end=c(2019), frequency = 1)
+
+air.daly.low.plot<-autoplot(air.daly.low.ts)+ 
+  ylab('DALY Rate of air pollution risk') + 
+  labs(title="DALY in low SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "red3")
+
+air.deaths.low.sdi<- IHME.GBD_2019_DATA.605db46d.1
+
+air.deaths.low<- air.deaths.low.sdi %>% arrange(year)
+
+air.deaths.low.ts <- ts(air.deaths.low["val"], start = c(2010),end=c(2019), frequency = 1)
+
+air.deaths.low.plot<-autoplot(air.deaths.low.ts)+ 
+  ylab('Death Rate of air pollution risk') + 
+  labs(title="Deaths in low SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "red3")
+
+air.deaths.med.sdi<- IHME.GBD_2019_DATA.3ea25e10.1
+
+air.deaths.med<- air.deaths.med.sdi %>% arrange(year)
+
+air.deaths.med.ts <- ts(air.deaths.med["val"], start = c(2010),end=c(2019), frequency = 1)
+
+air.deaths.med.plot<-autoplot(air.deaths.med.ts)+ 
+  ylab('Death Rate of air pollution risk') + 
+  labs(title="Deaths in medium SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "forestgreen")
+
+air.deaths.high.sdi<- IHME.GBD_2019_DATA.e010848f.1
+
+air.deaths.high<- air.deaths.high.sdi %>% arrange(year)
+
+air.deaths.high.ts <- ts(air.deaths.high["val"], start = c(2010),end=c(2019), frequency = 1)
+
+air.deaths.high.plot<-autoplot(air.deaths.high.ts)+ 
+  ylab('Death Rate of air pollution risk') + 
+  labs(title="Deaths in high SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "#1380A1")
+
+air.yld.high.sdi<- IHME.GBD_2019_DATA.aa70a842.1
+
+air.yld.high<- air.yld.high.sdi %>% arrange(year)
+
+air.yld.high.ts <- ts(air.yld.high["val"], start = c(2010),end=c(2019), frequency = 1)
+
+air.yld.high.plot<-autoplot(air.yld.high.ts)+ 
+  ylab('YLD Rate of air pollution risk') + 
+  labs(title="YLD in high SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "#1380A1")
+
+air.yld.med.sdi<- IHME.GBD_2019_DATA.1f74192a.1
+
+air.yld.med<- air.yld.med.sdi %>% arrange(year)
+
+air.yld.med.ts <- ts(air.yld.med["val"], start = c(2010),end=c(2019), frequency = 1)
+
+air.yld.med.plot<-autoplot(air.yld.med.ts)+ 
+  ylab('YLD Rate of air pollution risk') + 
+  labs(title="YLD in medium SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "forestgreen")
+
+air.yld.low.sdi<- IHME.GBD_2019_DATA.5eac6de4.1
+
+air.yld.low<- air.yld.low.sdi %>% arrange(year)
+
+air.yld.low.ts <- ts(air.yld.low["val"], start = c(2010),end=c(2019), frequency = 1)
+
+air.yld.low.plot<-autoplot(air.yld.low.ts)+ 
+  ylab('YLD Rate of air pollution risk') + 
+  labs(title="YLD in low SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "red3")
+
+air.yll.low.sdi<- IHME.GBD_2019_DATA.dcb541e4.1
+
+air.yll.low<- air.yll.low.sdi %>% arrange(year)
+
+air.yll.low.ts <- ts(air.yll.low["val"], start = c(2010),end=c(2019), frequency = 1)
+
+air.yll.low.plot<-autoplot(air.yll.low.ts)+ 
+  ylab('YLL Rate of air pollution risk') + 
+  labs(title="YLL in low SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "red3")
+
+air.yll.med.sdi<- IHME.GBD_2019_DATA.4b8528af.1
+
+air.yll.med<- air.yll.med.sdi %>% arrange(year)
+
+air.yll.med.ts <- ts(air.yll.med["val"], start = c(2010),end=c(2019), frequency = 1)
+
+air.yll.med.plot<-autoplot(air.yll.med.ts)+ 
+  ylab('YLL Rate of air pollution risk') + 
+  labs(title="YLL in medium SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "forestgreen")
+
+air.yll.high.sdi<- IHME.GBD_2019_DATA.755892cd.1
+
+air.yll.high<- air.yll.high.sdi %>% arrange(year)
+
+air.yll.high.ts <- ts(air.yll.high["val"], start = c(2010),end=c(2019), frequency = 1)
+
+air.yll.high.plot<-autoplot(air.yll.high.ts)+ 
+  ylab('YLL Rate of air pollution risk') + 
+  labs(title="YLL in high SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "#1380A1")
+
+#occupational risk time series analysis 
+
+occupational.daly.high.sdi<- IHME.GBD_2019_DATA.26f57601.1
+
+occupational.daly.high<- occupational.daly.high.sdi %>% arrange(year)
+
+occupational.daly.high.ts <- ts(occupational.daly.high["val"], start = c(2010),end=c(2019), frequency = 1)
+
+occupational.daly.high.plot<- autoplot(occupational.daly.high.ts)+ 
+  ylab('DALY Rate of occupational risk') + 
+  labs(title="DALY in high SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "#1380A1")
+
+occupational.daly.med.sdi<- IHME.GBD_2019_DATA.ada38869.1
+
+occupational.daly.med<- occupational.daly.med.sdi %>% arrange(year)
+
+occupational.daly.med.ts <- ts(occupational.daly.med["val"], start = c(2010),end=c(2019), frequency = 1)
+
+occupational.daly.med.plot<- autoplot(occupational.daly.med.ts)+ 
+  ylab('DALY Rate of occupational risk') + 
+  labs(title="DALY in medium SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "forestgreen")
+
+occupational.daly.low.sdi<- IHME.GBD_2019_DATA.d94da778.1
+
+occupational.daly.low<- occupational.daly.low.sdi %>% arrange(year)
+
+occupational.daly.low.ts <- ts(occupational.daly.low["val"], start = c(2010),end=c(2019), frequency = 1)
+
+occupational.daly.low.plot<-autoplot(occupational.daly.low.ts)+ 
+  ylab('DALY Rate of occupational risk') + 
+  labs(title="DALY in low SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "red3")
+
+occupational.deaths.low.sdi<- IHME.GBD_2019_DATA.35a05d54.1
+
+occupational.deaths.low<- occupational.deaths.low.sdi %>% arrange(year)
+
+occupational.deaths.low.ts <- ts(occupational.deaths.low["val"], start = c(2010),end=c(2019), frequency = 1)
+
+occupational.deaths.low.plot<-autoplot(occupational.deaths.low.ts)+ 
+  ylab('Death Rate of occupational risk') + 
+  labs(title="Deaths in low SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "red3")
+
+occupational.deaths.med.sdi<- IHME.GBD_2019_DATA.aae670ab.1
+
+occupational.deaths.med<- occupational.deaths.med.sdi %>% arrange(year)
+
+occupational.deaths.med.ts <- ts(occupational.deaths.med["val"], start = c(2010),end=c(2019), frequency = 1)
+
+occupational.deaths.med.plot<-autoplot(occupational.deaths.med.ts)+ 
+  ylab('Death Rate of occupational risk') + 
+  labs(title="Deaths in medium SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "forestgreen")
+
+occupational.deaths.high.sdi<- IHME.GBD_2019_DATA.d1343b93.1
+
+occupational.deaths.high<- occupational.deaths.high.sdi %>% arrange(year)
+
+occupational.deaths.high.ts <- ts(occupational.deaths.high["val"], start = c(2010),end=c(2019), frequency = 1)
+
+occupational.deaths.high.plot<-autoplot(occupational.deaths.high.ts)+ 
+  ylab('Death Rate of occupational risk') + 
+  labs(title="Deaths in high SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "#1380A1")
+
+occupational.yld.high.sdi<- IHME.GBD_2019_DATA.7dcaf738.1
+
+occupational.yld.high<- occupational.yld.high.sdi %>% arrange(year)
+
+occupational.yld.high.ts <- ts(occupational.yld.high["val"], start = c(2010),end=c(2019), frequency = 1)
+
+occupational.yld.high.plot<-autoplot(occupational.yld.high.ts)+ 
+  ylab('YLD Rate of occupational risk') + 
+  labs(title="YLD in high SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "#1380A1")
+
+occupational.yld.med.sdi<- IHME.GBD_2019_DATA.3c3d7321.1
+
+occupational.yld.med<- occupational.yld.med.sdi %>% arrange(year)
+
+occupational.yld.med.ts <- ts(occupational.yld.med["val"], start = c(2010),end=c(2019), frequency = 1)
+
+occupational.yld.med.plot<-autoplot(occupational.yld.med.ts)+ 
+  ylab('YLD Rate of occupational risk') + 
+  labs(title="YLD in medium SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "forestgreen")
+
+occupational.yld.low.sdi<- IHME.GBD_2019_DATA.cafd2fdc.1
+occupational.yld.low<- occupational.yld.low.sdi %>% arrange(year)
+occupational.yld.low.ts <- ts(occupational.yld.low["val"], start = c(2010),end=c(2019), frequency = 1)
+
+occupational.yld.low.plot<-autoplot(occupational.yld.low.ts)+ 
+  ylab('YLD Rate of occupational risk') + 
+  labs(title="YLD in low SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "red3")
+
+occupational.yll.low.sdi<- IHME.GBD_2019_DATA.18ecdeb8.1
+
+occupational.yll.low<- occupational.yll.low.sdi %>% arrange(year)
+
+occupational.yll.low.ts <- ts(occupational.yll.low["val"], start = c(2010),end=c(2019), frequency = 1)
+
+occupational.yll.low.plot<-autoplot(occupational.yll.low.ts)+ 
+  ylab('YLL Rate of occupational risk') + 
+  labs(title="YLL in low SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "red3")
+
+occupational.yll.med.sdi<- IHME.GBD_2019_DATA.3c8d4c05.1
+
+occupational.yll.med<- occupational.yll.med.sdi %>% arrange(year)
+
+occupational.yll.med.ts <- ts(occupational.yll.med["val"], start = c(2010),end=c(2019), frequency = 1)
+
+occupational.yll.med.plot<-autoplot(occupational.yll.med.ts)+ 
+  ylab('YLL Rate of occupational risk') + 
+  labs(title="YLL in medium SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "forestgreen")
+
+occupational.yll.high.sdi<- IHME.GBD_2019_DATA.ce2e10d3.1
+
+occupational.yll.high<- occupational.yll.high.sdi %>% arrange(year)
+
+occupational.yll.high.ts <- ts(occupational.yll.high["val"], start = c(2010),end=c(2019), frequency = 1)
+
+occupational.yll.high.plot<-autoplot(occupational.yll.high.ts)+ 
+  ylab('YLL Rate of occupational risk') + 
+  labs(title="YLL in high SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "#1380A1")
+
+#dietary risks time series analysis
+
+dietary.daly.high.sdi<- IHME.GBD_2019_DATA.5db958bf.1
+
+dietary.daly.high<- dietary.daly.high.sdi %>% arrange(year)
+
+dietary.daly.high.ts <- ts(dietary.daly.high["val"], start = c(2010),end=c(2019), frequency = 1)
+
+dietary.daly.high.plot<-autoplot(dietary.daly.high.ts)+ 
+  ylab('DALY Rate of dietary risk') + 
+  labs(title="DALY in high SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "#1380A1")
+
+dietary.daly.med.sdi<- IHME.GBD_2019_DATA.b2888617.1
+
+dietary.daly.med<- dietary.daly.med.sdi %>% arrange(year)
+
+dietary.daly.med.ts <- ts(dietary.daly.med["val"], start = c(2010),end=c(2019), frequency = 1)
+
+dietary.daly.med.plot<-autoplot(dietary.daly.med.ts)+ 
+  ylab('DALY Rate of dietary risk') + 
+  labs(title="DALY in medium SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "forestgreen")
+
+dietary.daly.low.sdi<- IHME.GBD_2019_DATA.b671674c.1
+
+dietary.daly.low<- dietary.daly.low.sdi %>% arrange(year)
+
+dietary.daly.low.ts <- ts(dietary.daly.low["val"], start = c(2010),end=c(2019), frequency = 1)
+
+dietary.daly.low.plot<-autoplot(dietary.daly.low.ts)+ 
+  ylab('DALY Rate of dietary risk') + 
+  labs(title="DALY in low SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "red3")
+
+dietary.deaths.low.sdi<- IHME.GBD_2019_DATA.b9afdf0f.1
+
+dietary.deaths.low<- dietary.deaths.low.sdi %>% arrange(year)
+
+dietary.deaths.low.ts <- ts(dietary.deaths.low["val"], start = c(2010),end=c(2019), frequency = 1)
+
+dietary.deaths.low.plot<-autoplot(dietary.deaths.low.ts)+ 
+  ylab('Death Rate of dietary risk') + 
+  labs(title="Deaths in low SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "red3")
+
+dietary.deaths.med.sdi<- IHME.GBD_2019_DATA.f10d62d7.1
+
+dietary.deaths.med<- dietary.deaths.med.sdi %>% arrange(year)
+
+dietary.deaths.med.ts <- ts(dietary.deaths.med["val"], start = c(2010),end=c(2019), frequency = 1)
+
+dietary.deaths.med.plot<-autoplot(dietary.deaths.med.ts)+ 
+  ylab('Death Rate of dietary risk') + 
+  labs(title="Deaths in medium SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "forestgreen")
+
+dietary.deaths.high.sdi<- IHME.GBD_2019_DATA.09853661.1
+
+dietary.deaths.high<- dietary.deaths.high.sdi %>% arrange(year)
+
+dietary.deaths.high.ts <- ts(dietary.deaths.high["val"], start = c(2010),end=c(2019), frequency = 1)
+
+dietary.deaths.high.plot<-autoplot(dietary.deaths.high.ts)+ 
+  ylab('Death Rate of dietary risk') + 
+  labs(title="Deaths in high SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "#1380A1")
+
+dietary.yld.high.sdi<- IHME.GBD_2019_DATA.ac3b7537.1
+
+dietary.yld.high<- dietary.yld.high.sdi %>% arrange(year)
+
+dietary.yld.high.ts <- ts(dietary.yld.high["val"], start = c(2010),end=c(2019), frequency = 1)
+
+dietary.yld.high.plot<-autoplot(dietary.yld.high.ts)+ 
+  ylab('YLD Rate of dietary risk') + 
+  labs(title="YLD in high SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "#1380A1")
+
+dietary.yld.med.sdi<- IHME.GBD_2019_DATA.245a90ac.1
+
+dietary.yld.med<- dietary.yld.med.sdi %>% arrange(year)
+
+dietary.yld.med.ts <- ts(dietary.yld.med["val"], start = c(2010),end=c(2019), frequency = 1)
+
+dietary.yld.med.plot<-autoplot(dietary.yld.med.ts)+ 
+  ylab('YLD Rate of dietary risk') + 
+  labs(title="YLD in medium SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "forestgreen")
+
+dietary.yld.low.sdi<- IHME.GBD_2019_DATA.95df5efc.1
+
+dietary.yld.low<- dietary.yld.low.sdi %>% arrange(year)
+
+dietary.yld.low.ts <- ts(dietary.yld.low["val"], start = c(2010),end=c(2019), frequency = 1)
+
+dietary.yld.low.plot<-autoplot(dietary.yld.low.ts)+ 
+  ylab('YLD Rate of dietary risk') + 
+  labs(title="YLD in low SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "red3")
+
+dietary.yll.low.sdi<- IHME.GBD_2019_DATA.7afdd63c.1
+
+dietary.yll.low<- dietary.yll.low.sdi %>% arrange(year)
+
+dietary.yll.low.ts <- ts(dietary.yll.low["val"], start = c(2010),end=c(2019), frequency = 1)
+
+dietary.yll.low.plot<-autoplot(dietary.yll.low.ts)+ 
+  ylab('YLL Rate of dietary risk') + 
+  labs(title="YLL in low SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "red3")
+
+dietary.yll.med.sdi<- IHME.GBD_2019_DATA.fdd41fdf.1
+
+dietary.yll.med<- dietary.yll.med.sdi %>% arrange(year)
+
+dietary.yll.med.ts <- ts(dietary.yll.med["val"], start = c(2010),end=c(2019), frequency = 1)
+
+dietary.yll.med.plot<-autoplot(dietary.yll.med.ts)+ 
+  ylab('YLL Rate of dietary risk') + 
+  labs(title="YLL in medium SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "forestgreen")
+
+dietary.yll.high.sdi<- IHME.GBD_2019_DATA.03013f17.1
+
+dietary.yll.high<- dietary.yll.high.sdi %>% arrange(year)
+
+dietary.yll.high.ts <- ts(dietary.yll.high["val"], start = c(2010),end=c(2019), frequency = 1)
+
+dietary.yll.high.plot<-autoplot(dietary.yll.high.ts)+ 
+  ylab('YLL Rate of dietary risk') + 
+  labs(title="YLL in high SDI countries") +
+  theme(plot.background = element_rect(fill = "#d5e4eb")) +
+  geom_line(color = "#1380A1")
+
 ##### TIME SERIES Plots ########################################################
 grid.arrange(deaths_high_plot, deaths_middle_plot, deaths_low_plot,
              DALYs_high_plot,DALYs_middle_plot, DALYs_low_plot,
              YLLs_high_plot,YLLs_middle_plot, YLLs_low_plot,
              Prev_high_plot,Prev_middle_plot, Prev_low_plot, 
              ncol = 3, nrow = 4)
+             
+grid.arrange(tobacco.daly.high.plot, tobacco.daly.med.plot, tobacco.daly.low.plot,
+             tobacco.deaths.high.plot, tobacco.deaths.med.plot, tobacco.deaths.low.plot,
+             tobacco.yld.high.plot, tobacco.yld.med.plot, tobacco.yld.low.plot,
+             tobacco.yll.high.plot, tobacco.yll.med.plot, tobacco.yll.low.plot, ncol = 3, nrow = 4)
 
+grid.arrange(air.daly.high.plot, air.daly.med.plot, air.daly.low.plot,
+             air.deaths.high.plot, air.deaths.med.plot, air.deaths.low.plot,
+             air.yld.high.plot, air.yld.med.plot, air.yld.low.plot,
+             air.yll.high.plot, air.yll.med.plot, air.yll.low.plot, ncol = 3, nrow = 4)
 
+grid.arrange(occupational.daly.high.plot, occupational.daly.med.plot, occupational.daly.low.plot,
+             occupational.deaths.high.plot, occupational.deaths.med.plot, occupational.deaths.low.plot,
+             occupational.yld.high.plot, occupational.yld.med.plot, occupational.yld.low.plot,
+             occupational.yll.high.plot, occupational.yll.med.plot, occupational.yll.low.plot, ncol = 3, nrow = 4)
 
-
-
-
-
+grid.arrange(dietary.daly.high.plot, dietary.daly.med.plot, occupational.daly.low.plot,
+             dietary.deaths.high.plot, dietary.deaths.med.plot, occupational.deaths.low.plot,
+             dietary.yld.high.plot, dietary.yld.med.plot, occupational.yld.low.plot,
+             dietary.yll.high.plot, dietary.yll.med.plot, occupational.yll.low.plot, ncol = 3, nrow = 4)             
+             

@@ -328,6 +328,10 @@ box4 <- ggplot(YLLs, aes(y = val)) +
 ggarrange(box1, box2, box3,box4 + rremove("x.text"), 
           ncol = 2, nrow = 2) # This code arranges the above figures into one plot in order to see all figures better and easier.
 
+summary(Prev)
+
+
+
 ##### AGE DATA ANALYSIS ########################################################
 # Age Deaths 
 Death_Age_highSDI_plot <- ggplot(Death_Age_highSDI, aes(x = year, y = val, color = age)) +

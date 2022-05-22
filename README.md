@@ -1,3 +1,4 @@
+``{r} 
 ##### The Global Burden of Cancer 2010 to 2019: How do Developed and           #
 ##### Developing Countries Compare in Cancer Rates                             #
 # Code developed by Max Winter and Andre Faid                                  #
@@ -1173,3 +1174,4 @@ grid.arrange(dietary.daly.high.plot, dietary.daly.med.plot, occupational.daly.lo
              dietary.yld.high.plot, dietary.yld.med.plot, occupational.yld.low.plot,
              dietary.yll.high.plot, dietary.yll.med.plot, occupational.yll.low.plot, ncol = 3, nrow = 4)             
              
+```
